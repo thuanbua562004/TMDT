@@ -2,6 +2,11 @@
 # TMDT
 TMDT
 # FITVAA
+KHOA CÔNG NGHỆ THÔNG TIN (HỌC VIỆN HÀNG KHÔNG VIỆT NAM)
+Nhóm 16
+1.VŨ VĂN THUẬN 
+2. NGUYỄN LƯƠNG TRÍ 
+
 VAA
 =======
 # Getting Started with Create React App
