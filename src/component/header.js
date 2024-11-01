@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 function Header() {
   return (
     <header className="sticky-top">
@@ -7,7 +7,7 @@ function Header() {
         <nav className="navbar navbar-expand-lg navbar-light bg-white" id="header-nav">
           <div className="container">
             <div className="d-flex align-items-center">
-              <a href="/index.html" className="navbar-brand">
+              <a href="" className="navbar-brand">
                 <img className="header-logo" src="./images/Logg.png" alt="header Logo Honda" />
               </a>
             </div>
@@ -25,19 +25,18 @@ function Header() {
             <div className="collapse navbar-collapse" id="navbar">
               <ul className="navbar-nav ml-auto d-flex align-items-center p-2">
                 <li className="nav-item">
-                  <a className="nav-link text-dark" href="/index.html">Trang chủ</a>
+                  <Link className="nav-link text-dark" to={"/"}>Trang Chủ   </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link text-dark" href="#motorcycles">Xe máy</a>
+                <Link className="nav-link text-dark" to={"/product"}>Sản Phẩm   </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link text-dark" href="#service">Dịch vụ</a>
+                <Link className="nav-link text-dark" to={"/"}>Dịch Vụ    </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link text-dark" href="./contacto/contacto.html">Liên hệ</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link text-dark" href="/about-us.html">Chúng tôi</a>
+                <Link className="nav-link text-dark" to={"/about"}>About   </Link>
                 </li>
                 <li className="nav-item">
                   <button

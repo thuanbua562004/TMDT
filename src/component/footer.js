@@ -2,7 +2,7 @@ import React from 'react';
 
 function Footer() {
   return (
-    <footer className="page-footer font-small indigo">
+    <footer className="page-footer font-small indigo mt-5">
       <div className="container-fluid">
 
         <div className="row text-center text-white d-flex justify-content-center pt-5 mb-3">
