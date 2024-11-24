@@ -6,7 +6,7 @@
 
 ## Thông tin nhóm
 - **Tên nhóm**: Nhóm 16
-- **Tên khoa**: Khoa Công Nghệ Thông Tin - HỌC VIỆN HÀNG KHÔNG VIỆT NAM
+- ****: Khoa Công Nghệ Thông Tin - HỌC VIỆN HÀNG KHÔNG VIỆT NAM
 
 ## Hashtag
 Hashtag: [#FITVAA](https://fitvaa.edu.vn/Public/Student/ViewCate/Khoa_Cong_Nghe_Thong_Tin_Hoc_Vien_Hang_khong_Viet_Nam/KHF@5893.VAA)
