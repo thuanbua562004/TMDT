@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
 
+const colorSchema = new mongoose.Schema({
+    colorCode: { type: String, required: true },
+    imageUrl: { type: String, required: true } 
+});
+
 const vehicleSchema = new mongoose.Schema({
     id: {
         type: String,
         required: true,
         unique: true,
-        default: () => new mongoose.Types.ObjectId().toHexString() 
+        default: () => new mongoose.Types.ObjectId().toHexString()
     },
     name: {
         type: String,
@@ -16,18 +21,18 @@ const vehicleSchema = new mongoose.Schema({
         required: true
     },
     price: {
-        type: String, 
-        required: true
-    },
-    description: {  // Fixed the typo from "decription" to "description"
         type: String,
         required: true
     },
-    img: {
-        type: Map,
-        of: String,  // Using Map to store dynamic image URLs as key-value pairs
-        required: false
-    }
-}, { timestamps: true });  // Automatically adds createdAt and updatedAt timestamps
+    image: {
+        type: [],
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    colors: [colorSchema], 
+});
 
-module.exports = mongoose.model('Vehicles', vehicleSchema);
+module.exports = mongoose.model('Vehicle', vehicleSchema);
