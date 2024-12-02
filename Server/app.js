@@ -6,7 +6,7 @@ const cors = require('cors');
 const Catalog = require('./model/Catalog');
 const Vehicle = require('./model/Vehicle');
 const History = require('./model/History');
-
+const Comment = require('./model/Comment');
 const Cart = require('./model/Cart');
 const User = require('./model/User');
 const multer = require('multer');
@@ -36,7 +36,8 @@ const startServer = async () => {
 
     // API thêm sản phẩm vào giỏ hàng
     app.post('/cart', async (req, res) => {
-        const { userId, id_product, imgProduct, nameProduct, number, price } = req.body;
+        const { userId, id_product, imgProduct, nameProduct, number, price , color} = req.body;
+        console.log(color);
         try {
             const isCheckCart = await Cart.findOne({ id: userId });
 
@@ -46,11 +47,12 @@ const startServer = async () => {
                     id: userId,
                     details: [
                         {
-                            id_product: id_product,  // id_product thay vì _id
+                            id_product: id_product,  
                             imgProduct: imgProduct,
                             nameProduct: nameProduct,
                             number: number,
                             price: price,
+                            color: color
                         },
                     ],
                 });
@@ -68,6 +70,7 @@ const startServer = async () => {
                         nameProduct: nameProduct,
                         number: number,
                         price: price,
+                        color: color
                     });
 
                     const updatedCart = await isCheckCart.save();
@@ -272,9 +275,7 @@ const startServer = async () => {
 
     app.post('/product', async (req, res) => {
         try {
-            const { name, category, price, description, img1, img2, img3, date } = req.body;
-
-            console.log("Received product data:", name, category, price, description, img1, img2, date);
+            const { name, category, price, description, colors , date ,image} = req.body;
 
             if (!name || !price || !category) {
                 return res.status(400).json({ error: "Name, category, and price are required fields." });
@@ -284,11 +285,8 @@ const startServer = async () => {
                 category,
                 price,
                 description,
-                img: {
-                    img1,
-                    img2,
-                    img3
-                },
+                colors,
+                image,
                 dateAdded: date
             });
 
@@ -303,10 +301,7 @@ const startServer = async () => {
     app.put('/product/:id', async (req, res) => {
         try {
             const { id } = req.params; // Lấy ID từ params
-            const { name, category, price, description, img1, img2, img3, date } = req.body;
-
-            console.log("Received update request for product ID:", id);
-            console.log("Received updated product data:", name, category, price, description, img1, img2, date);
+            const { name, category, price, description,image , date ,colors } = req.body;
 
             const updateData = {};
 
@@ -314,11 +309,14 @@ const startServer = async () => {
             if (category) updateData.category = category;
             if (price) updateData.price = price;
             if (description) updateData.description = description;
-            if (img1) updateData.img = { ...updateData.img, img1 };
-            if (img2) updateData.img = { ...updateData.img, img2 };
-            if (img3) updateData.img = { ...updateData.img, img3 };
+            if (image.length>0 && Array.isArray(image)) {
+                updateData.image = [...image];
+            }
+            if (colors.length>0 && Array.isArray(colors)) {
+                updateData.colors = [...colors];
+            }
             if (date) updateData.dateAdded = date;
-
+            console.log(updateData);
             const updatedProduct = await Vehicle.findOneAndUpdate(
                 { id: id },
                 updateData,
@@ -420,6 +418,72 @@ const startServer = async () => {
         }
     })
 
+    ////////////Comment 
+
+    app.post('/comment', async (req, res) => {
+        try {
+            const { content, email, id_product } = req.body;
+            if (!content || !email) {
+              return res.status(400).json({
+                message: "Content and email are required",
+              });
+            }
+        
+            const comment = {
+              content,
+              email
+            };
+        
+            const updatedProduct = await Comment.findOneAndUpdate(
+              { id: id_product }, // Điều kiện tìm sản phẩm
+              { $push: { comments: comment } }, // Thêm comment vào mảng
+              { new: true, upsert: true } // Tạo mới nếu không tìm thấy sản phẩm
+            );
+        
+            return res.status(201).json({
+              message: "Comment added successfully",
+              data: updatedProduct,
+            });
+          } catch (error) {
+            console.error(error.message);
+            return res.status(500).json({
+              message: "Failed to add comment",
+              error: error.message,
+            });
+          }
+
+    }) 
+    
+    
+    app.get('/comment/:id', async (req, res) => {
+        try {
+            const id = req.params.id;
+            const comment = await Comment.findOne({
+              id: id
+            })
+            res.status(200).json(comment);
+          } catch (error) {
+            res.status(500).send({ error: error.message });
+          }
+    })
+    app.delete('/comment', async (req, res) => {
+        try {
+            const id_comment = req.body.id_comment;
+            const id_product = req.body.id_product;
+            console.log(id_comment)
+            const result = await Comment.findOneAndUpdate(
+              { id: id_product }, // Tìm sản phẩm theo id
+              { $pull: { comments: { _id: id_comment } } }, // Xóa comment với _id là id_comment
+              { new: true } // Trả về tài liệu mới sau khi cập nhật
+            );
+            if (!result) {
+              return res.status(404).json({ message: 'Không tìm thấy sản phẩm hoặc comment' });
+            }
+            res.status(200).json(result);
+          } catch (error) {
+            res.status(500).send({ error: error.message });
+          }
+    })
 
     /////////////////upload ảnh lên localhost 
     const storage = multer.diskStorage({
