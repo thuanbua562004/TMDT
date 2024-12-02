@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import namer from 'color-name-list';
 
 function Historybuy() {
   const [orders, setOrders] = useState([]);
@@ -34,6 +35,7 @@ function Historybuy() {
               <th scope="col">Ngày Đặt</th>
               <th scope="col">Số điện thoại</th>
               <th scope="col">Tên Sản Phẩm</th>
+              <th scope="col">Mau</th>
               <th scope="col">Hình Ảnh</th>
               <th scope="col">Tổng Tiền</th>
             </tr>
@@ -60,6 +62,7 @@ function Historybuy() {
                       )}
                       {/* Hiển thị thông tin sản phẩm */}
                       <td>{product.name}</td>
+                      <td>{(product.color )}</td>
                       <td>
                         <img
                           src={product.image}
